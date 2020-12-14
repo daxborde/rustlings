@@ -11,10 +11,15 @@ const I_AM_DONE_REGEX: &str = r"(?m)^\s*///?\s*I\s+AM\s+NOT\s+DONE";
 const CONTEXT: usize = 2;
 const CLIPPY_CARGO_TOML_PATH: &str = "./exercises/clippy/Cargo.toml";
 
-// Get a temporary file name that is hopefully unique to this process
+// Get a temporary file name that is hopefully unique
 #[inline]
 fn temp_file() -> String {
-    format!("./temp_{}", process::id())
+    let thread_id: String = format!("{:?}", std::thread::current().id())
+        .chars()
+        .filter(|c| c.is_alphanumeric())
+        .collect();
+
+    format!("./temp_{}_{}", process::id(), thread_id)
 }
 
 // The mode of the exercise.
@@ -315,7 +320,7 @@ mod test {
     #[test]
     fn test_exercise_with_output() {
         let exercise = Exercise {
-            name: "finished_exercise".into(),
+            name: "exercise_with_output".into(),
             path: PathBuf::from("tests/fixture/success/testSuccess.rs"),
             mode: Mode::Test,
             hint: String::new(),
