@@ -38,10 +38,12 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
         // are not allowed to put any type of fruit that's already
         // present!
 
-        let count = basket.get(&fruit);
-        if count == None {
-            basket.insert(fruit, 10);
-        }
+        // let count = basket.get(&fruit);
+        // if count == None {
+        //     basket.insert(fruit, 10);
+        // }
+
+        basket.entry(fruit).or_insert(10);
     }
 }
 
